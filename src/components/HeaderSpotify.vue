@@ -1,5 +1,5 @@
 <template>
-    <header class="p-4">
+    <header class="px-5 py-2">
         <div class="box-logo d-inline-block rounded-circle">
             <a href="#">
                 <i class="fab fa-spotify"></i>
@@ -22,7 +22,7 @@ export default {
 
             i {
                 color: #1dd760;
-                font-size: 50px;
+                font-size: 45px;
             }
     }
     }

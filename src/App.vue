@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <HeaderSpotify/>
-    
+    <main>
+      <Library />
+    </main>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   </div>
 </template>
@@ -9,12 +11,15 @@
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
 import HeaderSpotify from './components/HeaderSpotify.vue'
+import Library from './components/Library.vue'
+
 
 
 export default {
   name: 'App',
   components: {
-    HeaderSpotify
+    HeaderSpotify,
+    Library
     // HelloWorld
   }
 }
@@ -25,7 +30,10 @@ export default {
 
 
   #app {
-
+    main {
+      height: calc(100vh - 61px);
+      background-color: #1e2d3b;
+    }
 
   }
 </style>
