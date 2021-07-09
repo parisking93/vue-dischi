@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <HeaderSpotify/>
-    <main>
+    <main class="position-relative">
       <Library />
     </main>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
