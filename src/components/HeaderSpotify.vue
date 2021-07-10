@@ -6,7 +6,7 @@
             </a>
         </div>
         <div>
-            <SelectType/>
+            <SelectType :lista="album" />
         </div>
     </header>
 </template>
@@ -15,9 +15,10 @@
 import SelectType from '@/components/SelectType.vue';
 export default {
     name : 'HeaderSpotify',
+    props : ['album'],
     components : {
         SelectType
-    }
+    },
 }
 </script>
 <style lang="scss" scoped>

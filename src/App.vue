@@ -1,33 +1,72 @@
 <template>
   <div id="app">
-    <HeaderSpotify/>
-    <main class="position-relative">
-      <Library />
+    <HeaderSpotify :album="libraryList"/>
+    <main>
+      <Library :album="libraryListPass"/>
     </main>
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-import HeaderSpotify from './components/HeaderSpotify.vue'
-import Library from './components/Library.vue'
-
-
+import HeaderSpotify from './components/HeaderSpotify.vue';
+import Library from './components/Library.vue';
+import axios from 'axios';
+import { bus } from '@/bus.js';
 
 export default {
   name: 'App',
   components: {
     HeaderSpotify,
     Library
-    // HelloWorld
+  },
+  data(){
+    return {
+      libraryList : [],
+      apiLink :  'https://flynn.boolean.careers/exercises/api/array/music',
+      libraryListPass : ""
+
+    }
+  },
+  created(){
+      this.getLibrary();
+      bus.$on('clicked', (selectGenere)=>{
+        if(selectGenere != 'All') {
+          this.libraryListPass = this.libraryList.filter(element=> {
+            if(element.genre == selectGenere) {
+              return element.genre
+            }
+          });
+        } else {
+          this.libraryListPass = this.libraryList;
+        }
+
+      });    
+  },
+  methods: {
+
+      getLibrary(){
+          axios
+              .get(this.apiLink)
+              .then(response => {
+                  this.libraryList = response.data.response;
+                  this.libraryListPass = this.libraryList;
+                  setTimeout(()=>{
+                      this.loader = false;
+                  },600);
+              })
+              .catch(error => {
+                  console.log('Errore: ', error);
+              });
+      },
+  
   }
+
 }
+
 </script>
 
 <style lang="scss">
   @import '@/style/general.scss';
-
 
   #app {
     main {
