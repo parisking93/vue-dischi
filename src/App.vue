@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <HeaderSpotify :album="libraryList"/>
+    <HeaderSpotify :album="libraryListPass" />
     <main>
       <Library :album="libraryListPass"/>
     </main>
@@ -12,11 +12,6 @@ import HeaderSpotify from './components/HeaderSpotify.vue';
 import Library from './components/Library.vue';
 import axios from 'axios';
 import { bus } from '@/bus.js';
-import dayjs from 'dayjs';
-
-console.log(dayjs().format('hh'));
-var minMax = require('dayjs/plugin/minMax')
-dayjs.extend(minMax)
 
 export default {
   name: 'App',
@@ -28,22 +23,40 @@ export default {
     return {
       libraryList : [],
       apiLink :  'https://flynn.boolean.careers/exercises/api/array/music',
-      libraryListPass : ""
-
+      libraryListPass : "",
+      genereSelezionato : 'All',
+      ordinaLibri : false
     }
   },
-  created(){
+  mounted(){
       this.getLibrary();
-      bus.$on('clicked', (selectGenere)=>{
-        if(selectGenere != 'All') {
-          this.libraryListPass = this.libraryList.filter(element=> {
-            if(element.genre == selectGenere) {
-              return element.genre
+      setTimeout(()=>{
+        this.libraryListPass = this.libraryList;  
 
-            }
-          });
+      },800)
+      bus.$on('selected', (selectGenere)=>{
+
+        this.genereSelezionato = selectGenere;
+        this.filtraGenere(selectGenere);
+
+        if(this.ordinaLibri) {
+          this.libraryListPass.sort(this.comparaArrObj);
+          
+        }
+
+      });
+
+      bus.$on('ordinato',(ordinaLibrary)=>{
+        this.ordinaLibri = ordinaLibrary;
+        if(ordinaLibrary) {
+          this.libraryListPass.sort(this.comparaArrObj);
+          this.getLibrary()
         } else {
           this.libraryListPass = this.libraryList;
+          if(this.genereSelezionato !='All') {
+            this.filtraGenere(this.genereSelezionato);
+          } 
+
         }
       });    
   },
@@ -54,21 +67,31 @@ export default {
               .get(this.apiLink)
               .then(response => {
                   this.libraryList = response.data.response;
-                  this.libraryListPass = this.libraryList;
-                  this.libraryListPass.sort(this.comparaArrObj)
-                  setTimeout(()=>{
-                      this.loader = false;
-                  },600);
+                  // this.libraryListPass = this.libraryList;
+
               })
               .catch(error => {
                   console.log('Errore: ', error);
               });
+          
       },
       comparaArrObj(element1, element2) {
         if (element1.year > element2.year) return 1;
         if (element2.year > element1.year) return -1;
 
         return 0;
+      },
+      filtraGenere(genere) {
+          if(genere != 'All') {
+
+            this.libraryListPass = this.libraryList.filter(element=> {
+              if(element.genre == genere) {
+                return element.genre
+              }
+            });
+        } else {
+          this.libraryListPass = this.libraryList;
+        }
       }
   
   }

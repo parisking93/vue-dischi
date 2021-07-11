@@ -5,7 +5,8 @@
                 <i class="fab fa-spotify"></i>
             </a>
         </div>
-        <div>
+        <div class="d-flex">
+            <CheckBox class="me-5"/>
             <SelectType :lista="album" />
         </div>
     </header>
@@ -13,11 +14,14 @@
 
 <script>
 import SelectType from '@/components/SelectType.vue';
+import CheckBox from '@/components/CheckBox.vue';
+
 export default {
     name : 'HeaderSpotify',
     props : ['album'],
     components : {
-        SelectType
+        SelectType,
+        CheckBox
     },
 }
 </script>

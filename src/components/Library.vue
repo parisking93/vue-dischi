@@ -23,6 +23,7 @@ export default {
     data() {
         return {
             loader : true,
+            
         }
     },
     created() {
@@ -30,7 +31,16 @@ export default {
             this.loader = false;
 
         },600);
-    }
+           
+    },
+    watch : {
+        album : {
+            handler() {
+                this.listaFiltrata = this.album
+                console.log(this.album);
+            }
+        }
+    },
 
 }
 

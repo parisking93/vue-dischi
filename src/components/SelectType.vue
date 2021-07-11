@@ -1,7 +1,11 @@
 <template>
-    <select name="scegli" v-model.trim="selectValue" @change="selectV">
-        <option v-for="(genere,index) in listaAlbumGenere" :key="index" :value="genere">{{genere}}</option>
+    <div>
+        <label for="scegli" class="me-3 text-light text-capitalize">scegli la categoria</label>
+        <select id="scegli" v-model.trim="selectValue" @change="selectV">
+            <option v-for="(genere,index) in listaAlbumGenere" :key="index" :value="genere">{{genere}}</option>
     </select>
+    </div>
+
 </template>
 
 <script>
@@ -33,7 +37,7 @@ export default {
     },
     methods : {
         selectV() {
-            bus.$emit('clicked', this.selectValue);
+            bus.$emit('selected', this.selectValue);
             if(!this.listaAlbumGenere.includes(this.all)) {
                 this.listaAlbumGenere.unshift(this.all)
             }   
@@ -43,6 +47,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+    *{
+        cursor: pointer;
+    }
 
 </style>
