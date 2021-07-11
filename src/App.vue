@@ -12,6 +12,11 @@ import HeaderSpotify from './components/HeaderSpotify.vue';
 import Library from './components/Library.vue';
 import axios from 'axios';
 import { bus } from '@/bus.js';
+import dayjs from 'dayjs';
+
+console.log(dayjs().format('hh'));
+var minMax = require('dayjs/plugin/minMax')
+dayjs.extend(minMax)
 
 export default {
   name: 'App',
@@ -34,12 +39,12 @@ export default {
           this.libraryListPass = this.libraryList.filter(element=> {
             if(element.genre == selectGenere) {
               return element.genre
+
             }
           });
         } else {
           this.libraryListPass = this.libraryList;
         }
-
       });    
   },
   methods: {
@@ -50,6 +55,7 @@ export default {
               .then(response => {
                   this.libraryList = response.data.response;
                   this.libraryListPass = this.libraryList;
+                  this.libraryListPass.sort(this.comparaArrObj)
                   setTimeout(()=>{
                       this.loader = false;
                   },600);
@@ -58,6 +64,12 @@ export default {
                   console.log('Errore: ', error);
               });
       },
+      comparaArrObj(element1, element2) {
+        if (element1.year > element2.year) return 1;
+        if (element2.year > element1.year) return -1;
+
+        return 0;
+      }
   
   }
 
